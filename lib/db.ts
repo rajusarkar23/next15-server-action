@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const MONGO_URI = process.env.MONGO_URI as string;
+const MONGO_URI = process.env.MONGO_URI
 
 // if (!MONGO_URI) {
 //     throw new Error("Invalid mongo uri.")
@@ -8,7 +8,7 @@ const MONGO_URI = process.env.MONGO_URI as string;
 
 export async function connectToDB(){
     if (mongoose.connection.readyState === 0) {
-        await mongoose.connect(MONGO_URI)
+        await mongoose.connect(`${MONGO_URI}`)
         console.log("db connected!!!");
         
     }

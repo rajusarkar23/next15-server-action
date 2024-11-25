@@ -1,23 +1,42 @@
-import { addTodo } from './actions';
+'use client'
+import React, { useState } from 'react';
 
-export default async function Home() {
+export default function Home() {
+  const [title, setTitle] = useState("")
+  console.log("TITLE");
+  console.log(title);
+  
+  async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault()
 
-  async function handleAdd(formData: FormData) {
-    'use server'
-    const title = formData.get('title') as string;
-    if (title) await addTodo(title);
+      try {
+        const res = await fetch("/api/todos", {
+          method: "POST",
+          headers:{
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({title})
+        })
+        const response = await res.json()
+        console.log(response);
+        
+      } catch (error) {
+        console.log(error);
+        
+      }
   }
 
   return (
     <main className="p-4 max-w-lg mx-auto">
       <h1 className="text-2xl font-bold mb-4">Todo App</h1>
-      <form action={handleAdd} className="flex items-center space-x-2 mb-4">
+      <form onSubmit={handleAdd} className="flex items-center space-x-2 mb-4">
         <input
           type="text"
           name="title"
           placeholder="Add a todo"
-          className="flex-grow border rounded p-2"
+          className="flex-grow border rounded p-2 text-black"
           required
+          onChange={(e) => setTitle(e.target.value)}
         />
         <button
           type="submit"
